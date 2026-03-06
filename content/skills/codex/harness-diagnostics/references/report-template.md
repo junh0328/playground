@@ -44,13 +44,42 @@
 | Formatter | Y/N | |
 | CI pipeline | Y/N | |
 
-### 2. Gap 분석
+### 2. 요구사항 오버레이
+
+사용자가 별도로 제공한 요구사항이 있을 경우, 현재 상태와 분리해서 기록한다.
+
+| 항목 | 내용 | 분류 |
+|------|------|------|
+| 제품/서비스 목적 | | User requirement |
+| 기술 스택 제약 | | User requirement |
+| 팀 운영 규칙 | | User requirement |
+| 품질 기준 | | User requirement |
+| 문서 요구사항 | | User requirement |
+| 테스트/CI 요구사항 | | User requirement |
+
+추가로, Setup 리포트의 주요 판단과 제안에는 아래 출처 라벨을 함께 사용한다.
+
+- `Repo evidence`: 레포에서 직접 확인한 사실
+- `User requirement`: 사용자가 입력으로 제공한 목표/제약
+- `Inference`: 레포 근거와 요구사항을 바탕으로 도출한 제안 또는 추론
+
+예시 형식:
+
+```markdown
+- **Repo evidence**: `package.json`, `tsconfig.json`, `.github/workflows/ci.yml` 미존재
+- **User requirement**: "TypeScript strict, PR 필수, CI 필요"
+- **Inference**: AGENTS.md + strict tsconfig + 최소 CI를 Immediate 우선순위로 제안
+```
+
+### 3. Gap 분석
 
 | # | 원칙 | 현재 상태 | 누락 요소 | 심각도 |
 |---|------|-----------|-----------|--------|
 | 1-12 | ... | ... | ... | Critical/High/Medium/Low |
 
-### 3. 실행 계획
+초기 스캐폴드 직후 프로젝트의 경우, "현재 없음"은 결함이라기보다 초기 구축 대상으로 해석할 수 있다. 이때는 실제 결함과 계획된 미구현 항목을 구분해 서술한다.
+
+### 4. 실행 계획
 
 #### Immediate (< 1시간)
 
@@ -67,10 +96,22 @@
 | 순서 | 작업 | 관련 원칙 | 예상 소요 | 산출물 |
 |------|------|-----------|-----------|--------|
 
-### 4. 생성 제안 파일 목록
+### 5. 생성 제안 파일 목록
 
 | 파일 경로 | 유형 | 설명 | 우선순위 |
 |-----------|------|------|----------|
+
+선택적으로 아래 섹션을 추가할 수 있다.
+
+### 6. 목표 AGENTS.md 초안 구조
+
+| 섹션 | 포함 내용 | 출처 |
+|------|-----------|------|
+| 프로젝트 개요 | 제품 목적, 핵심 도메인 | User requirement |
+| 빌드/실행 명령어 | 설치, 실행, 테스트, 린트 | Repo evidence |
+| 디렉토리 구조 | 현재 구조 + 목표 구조 | Repo evidence + Inference |
+| 코딩 컨벤션 | 네이밍, 계층, import 규칙 | User requirement + Inference |
+| 운영 규칙 | 브랜치, PR, 배포, 문서 갱신 규칙 | User requirement |
 
 ---
 
@@ -207,3 +248,4 @@
 3. **우선순위 명시**: 모든 작업 항목에 우선순위 부여
 4. **일관성**: 동일 기준으로 시간 경과에 따른 비교 가능
 5. **Self-Assessment 필수**: 리포트 마지막에 반드시 포함
+6. **출처 분리**: Setup 모드에서는 `Repo evidence`, `User requirement`, `Inference`를 혼용하지 않음

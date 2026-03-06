@@ -83,7 +83,7 @@
 ## Meta: harness-diagnostics 자체 진단
 
 이 체크리스트를 `harness-diagnostics` skill에 적용한 결과.
-진단 시점: v1.3.0
+진단 시점: v1.4.0
 
 ### 결과 요약
 
