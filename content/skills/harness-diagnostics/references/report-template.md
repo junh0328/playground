@@ -116,7 +116,7 @@
 
 선택적으로 아래 섹션을 추가할 수 있다.
 
-### 6. 목표 AGENTS.md 또는 CLAUDE.md 초안 구조
+### 6. 목표 AGENTS.md 초안 구조
 
 | 섹션 | 포함 내용 | 출처 |
 |------|-----------|------|
@@ -163,11 +163,9 @@
 | C. Architecture & Knowledge | P6,P9,P11 | /10 | 0.20 | |
 | D. Operations & Maintenance | P7,P8 | /10 | 0.20 | |
 
-점수 계산 시 아래 템플릿 또는 스크립트를 함께 사용:
-
+점수 계산 시 아래 템플릿을 함께 사용:
 - `references/score-template.md`
 - `references/score-template.json`
-- `node scripts/calculate-score.js references/score-template.json`
 
 ### 3. 12원칙 상세
 
@@ -186,18 +184,35 @@
 - **개선 제안**: [구체적 방안]
 ```
 
-### 4. 체크리스트 결과
+### 4. 신뢰도 분석
+
+> Deep 프로필에서만 포함. `scripts/adversarial-verify.sh` 실행 결과를 기반으로 작성한다.
+> Quick/Standard 프로필에서는 이 섹션을 생략한다.
+
+| 지표 | 값 | 설명 |
+|------|------|------|
+| Score | /N | 체크리스트 통과 항목 수 |
+| Confidence | /N | 반증 검증을 통과한 높은 신뢰도 항목 수 |
+| Bias Delta | N | Score - Confidence (5 이상이면 긍정 편향 의심) |
+
+#### Low-confidence 항목
+
+| # | 항목 | 사유 |
+|---|------|------|
+| 1-N | ... | 반증 근거 또는 검증 불가 사유 |
+
+### 5. 체크리스트 결과
 
 | 카테고리 | 전체 | 통과 | 실패 | 통과율 |
 |----------|------|------|------|--------|
 
-### 5. 빠른 개선 항목
+### 6. 빠른 개선 항목
 
 | 순위 | 항목 | 관련 원칙 | 예상 소요 | 예상 점수 향상 |
 |------|------|-----------|-----------|----------------|
 | 1-5 | ... | ... | ... | +? 점 |
 
-### 6. 개선 로드맵
+### 7. 개선 로드맵
 
 #### 단기 (1-2주)
 
@@ -221,6 +236,8 @@
 
 ### 수행한 검증
 
+- `bash scripts/self-audit.sh`
+- `bash scripts/maintenance-scan.sh`
 - `node scripts/calculate-score.js references/score-template.json`
 - 추가로 실행한 명령
 
@@ -287,9 +304,8 @@
 
 ### 수행한 검증
 
-- `git log --stat`
-- `git diff --stat`
-- 추가로 실행한 명령
+- `bash scripts/maintenance-scan.sh`
+- 필요 시 `git log`, `git diff --stat`, `bash scripts/self-audit.sh`
 
 ---
 

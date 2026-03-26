@@ -15,11 +15,6 @@
 
 ---
 
-## 요약
-
-현재 레포는 공식 스캐폴드 직후 상태로, 기본 README와 lint 설정만 존재한다.
-사용자 요구사항상 TypeScript strict, PR 규칙, 테스트와 CI가 필수이므로 기능 구현 전에 에이전트 진입점과 최소 품질 게이트를 먼저 세우는 편이 적절하다.
-
 ## 1. 현황 요약
 
 | 항목 | 감지 결과 |
@@ -54,7 +49,7 @@
 | 문서 요구사항 | AGENTS.md, docs/adr, docs/guides 필요 | 사용자 요구사항 |
 | 테스트/CI 요구사항 | Vitest + Playwright, GitHub Actions | 사용자 요구사항 |
 
-- **레포 근거**: `package.json`, `tsconfig.json`, `README.md`, Next.js 기본 lint 설정
+- **레포 근거**: `package.json`, `tsconfig.json`, `README.md`, `.eslintrc*` 또는 Next.js 기본 lint 설정
 - **사용자 요구사항**: "TypeScript strict, PR 필수, Vitest + Playwright, AGENTS.md와 docs 필요"
 - **추론**: 기능 구현 전에 에이전트 진입점과 최소 품질 게이트를 먼저 세우는 것이 적절함
 
@@ -131,22 +126,6 @@
 | 디렉토리 구조 | `app/`, `components/`, `lib/`, `features/` 목표 구조 | 레포 근거 + 추론 |
 | 코딩 컨벤션 | Server Component 우선, strict TS, feature 단위 분리 | 사용자 요구사항 + 추론 |
 | 운영 규칙 | PR 필수, main 직접 push 금지, 문서 동시 갱신 | 사용자 요구사항 |
-
-### 근거
-
-- `package.json`, `tsconfig.json`, `README.md`
-- 사용자 요구사항 메모
-- 위 두 입력을 바탕으로 만든 초기 운영 제안
-
-### 위험 요소
-
-- 실제 기능 구조가 정해지기 전이라 디렉토리 설계 일부는 추론 단계
-- 테스트 전략은 배포 환경과 사용자 흐름이 더 명확해져야 세부 확정 가능
-
-### 수행한 검증
-
-- `package.json`, `tsconfig.json`, `README.md` 검토
-- Next.js 기본 스캐폴드 기준 누락 항목 분류
 
 ---
 

@@ -1,14 +1,15 @@
 # Skill 진단 체크리스트
 
-> Claude Code skill의 품질을 체계적으로 평가하기 위한 체크리스트.
+> Codex skill의 품질을 체계적으로 평가하기 위한 체크리스트.
 > 이 체크리스트는 자기 자신(harness-diagnostics skill)에게도 동일하게 적용된다.
 
 ---
 
-## 1. 파일 구조 검증 — 7항목
+## 1. 파일 구조 검증 — 8항목
 
 - [ ] `SKILL.md`가 skill 루트 디렉토리에 존재하는가
 - [ ] `SKILL.md`가 유일한 진입점(entry point)으로 기능하는가
+- [ ] 레포 운영용 `AGENTS.md`가 존재하는가
 - [ ] `references/` 디렉토리가 존재하고, 상세 참조 문서를 포함하는가
 - [ ] `examples/` 디렉토리가 존재하는가 (필요한 경우)
 - [ ] 파일명이 kebab-case 규칙을 따르는가 (예: `skill-checklist.md`)
@@ -71,34 +72,59 @@
 
 ---
 
-## 7. 자체 평가 메커니즘 — 5항목
+## 7. 자체 평가 메커니즘 — 7항목
 
 - [ ] 스킬이 자기 자신을 진단할 수 있는가 — self-referential 경로 존재
 - [ ] 진단 대상에 "Self"가 명시적으로 포함되어 있는가
 - [ ] version 필드를 통해 변경 이력을 추적할 수 있는가
 - [ ] 품질 기준(metrics)이 정의되어 있는가
 - [ ] 이 체크리스트 자체가 스킬 품질의 기준 문서로 기능하는가
+- [ ] 구조 검증과 런타임 검증이 별도 스크립트로 분리되어 있는가
+- [ ] self 결과가 `logs/self-audit-log.md`에 점수와 변경 메모로 기록되는가
 
 ---
 
-## Meta: harness-diagnostics 자체 진단
+## 8. 운영 Guardrail — 7항목
+
+- [ ] CI workflow가 self-audit/doc-lint를 실행하는가
+- [ ] PR 템플릿이 self 점수와 검증 명령을 요구하는가
+- [ ] Issue 템플릿이 evidence와 proposed change를 요구하는가
+- [ ] source of truth와 sync 정책이 문서화되어 있는가
+- [ ] maintenance/GC 스캔 경로가 존재하는가
+- [ ] `.nvmrc` 같은 런타임 버전 pin이 존재하고 CI와 일치하는가
+- [ ] local pre-commit hook 경로가 존재하고 설치 경로가 문서화되어 있는가
+
+---
+
+## 메타: harness-diagnostics 자체 진단
 
 이 체크리스트를 `harness-diagnostics` skill에 적용한 결과.
-진단 시점: v1.7.1
+진단 시점: v2.1.0
 
 ### 결과 요약
 
-| 카테고리 | 점수 | 비고 |
-|----------|------|------|
-| 파일 구조 검증 | 7/7 | 구조 완성 |
-| SKILL.md 품질 | 6/6 | 우수 |
-| Frontmatter 품질 | 6/6 | 우수 |
-| 본문 구조 | 6/6 | references 파일 모두 존재 |
-| 출력 형식 정의 | 5/5 | 수행한 검증 섹션 포함 |
-| References 품질 | 6/6 | 모든 파일 완성 |
-| 자체 평가 메커니즘 | 5/5 | Self 진단 경로 존재 |
+| 카테고리 | 점수 | 신뢰도 | 비고 |
+|----------|------|--------|------|
+| 파일 구조 검증 | 8/8 | high | AGENTS 포함 |
+| SKILL.md 품질 | 6/6 | 120줄 기준 충족 | 장문 산문 1건 (low confidence) |
+| Frontmatter 품질 | 6/6 | high | 우수 |
+| 본문 구조 | 6/6 | high | references 파일 모두 존재 |
+| 출력 형식 정의 | 5/5 | high | Verification 섹션 포함 |
+| References 품질 | 6/6 | medium | 교차 참조 1건 (허용 범위) |
+| 자체 평가 메커니즘 | 7/7 | high | 구조/런타임 분리 및 self log 운영 |
+| 운영 Guardrail | 7/7 | high | CI, 템플릿, GC 스캔, 런타임 pin, local hook 포함 |
 
-**총점**: 41/41 (100%)
+**총점**: 51/51 (100%)
+
+### Adversarial Verification
+
+`scripts/adversarial-verify.sh`로 반증 관점 재검증한 결과.
+
+- **Score**: 13/13
+- **Confidence**: 12/13
+- **Bias Delta**: 1 (낮을수록 좋음)
+
+Bias Delta = Score - Confidence. 5 이상이면 긍정 편향 의심.
 
 ---
 
@@ -119,6 +145,6 @@
 
 ### 정기 점검
 
-- **분기 1회**: 전체 skill-checklist 자기 적용 (41항목)
+- **분기 1회**: 전체 skill-checklist 자기 적용 (51항목)
 - **사용 후**: 실제 진단 수행 후 워크플로우/템플릿의 현실 적합성 검토
-- **외부 변경 시**: Claude Code skill 시스템의 사양 변경 시 frontmatter/구조 호환성 확인
+- **외부 변경 시**: Codex skill 시스템의 사양 변경 시 frontmatter/구조 호환성 확인

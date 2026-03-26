@@ -1,4 +1,4 @@
-# Audit Mode Workflow
+# Audit 모드 워크플로우
 
 > 프로젝트의 현재 에이전트 친화도를 평가하기 위한 워크플로우.
 
@@ -18,7 +18,7 @@
 - 소스 코드, 테스트, 문서, 설정 파일 구조 파악
 - 표준 레이아웃 준수 여부 확인
 
-### Tech Stack 및 프로젝트 유형 식별
+### 기술 스택 및 프로젝트 유형 식별
 
 - 의존성 파일 기반 언어/프레임워크 파악
 - 프로젝트 분류 (web app, library, CLI, monorepo 등)
@@ -41,17 +41,50 @@
 - 구체적 근거와 함께 기록
 - 점수 기준: `references/principles.md` 참조
 
-### Dimension 점수 산출
+### 차원 점수 산출
 
 - 4개 차원별 평균 점수 계산
 - 약점 차원 식별
 - 계산 방법: `references/maturity-framework.md` 참조
-- 필요 시 `references/score-template.md`, `references/score-template.json`, `scripts/calculate-score.js`로 검산
 
 ### 성숙도 레벨 결정
 
 - 종합 점수로 L1-L5 등급 결정
 - 차원 간 편차 분석
+
+---
+
+## Phase 2.5: 행동 검증
+
+> Deep 프로필에서 필수, Standard에서 권장, Quick에서 생략.
+> 정적 구조 검증을 넘어 에이전트가 실제로 문서를 따라 작업할 수 있는지 기능 검증한다.
+
+### Semantic Command Verification
+
+- `scripts/semantic-verify.sh` 실행
+- 에이전트 지시 문서(AGENTS.md, CLAUDE.md, README.md)의 코드 블록에서 명령어 추출
+- 각 명령어의 실행 가능 여부 판정: `runnable` / `missing` / `ambiguous`
+- Missing이 1건 이상이면 P10 점수 감점
+
+### Agent Walkthrough Simulation
+
+- `scripts/behavioral-verify.sh` 실행
+- 에이전트의 "첫 접촉" 시나리오 시뮬레이션:
+  1. Entry point 파일 탐색 (AGENTS.md → CLAUDE.md → README.md 순)
+  2. 핵심 키워드 존재 확인 (빌드/테스트/구조)
+  3. 명령 추출 및 실행 가능 여부 확인
+  4. Linter/Formatter/CI 설정 존재 확인
+
+### 점수 반영
+
+| 검증 | 반영 원칙 | 반영 방법 |
+|------|-----------|-----------|
+| Semantic Verify — Missing 0건 | P10 | +1점 가산 |
+| Semantic Verify — Missing 1건+ | P10 | -2점 감점 |
+| Behavioral — Entry point 발견 | P1 | 필수 조건 충족 |
+| Behavioral — 핵심 키워드 존재 | P1 | +1점/키워드 |
+| Behavioral — Lint/CI 존재 | P3 | +1점/항목 |
+| Behavioral — 전체 PASS | P1, P3, P10 | L5 전환 필수 조건 |
 
 ---
 
@@ -66,7 +99,7 @@
 
 ### Skill 대상
 
-- `references/skill-checklist.md` 실행
+- `references/skill-checklist.md` 실행 (40항목)
 - 카테고리별 통과율 산출
 
 ### 코드 샘플링 방법
@@ -109,7 +142,6 @@
 리포트 생성 후 출력 전 다음 사항을 검증한다:
 
 - [ ] 공통 헤더(진단 대상, 모드, 날짜, 기술 스택, 진단 범위)가 포함되어 있는가
-- [ ] `요약`, `근거`, `위험 요소`, `수행한 검증` 섹션이 포함되어 있는가
 - [ ] 12원칙 점수가 모두 기재되고, 각각에 근거가 제시되어 있는가
 - [ ] 차원 점수 계산이 정확한가 (소속 원칙 점수의 산술 평균)
 - [ ] 종합 점수 계산이 정확한가 (`(DimA×0.3 + DimB×0.3 + DimC×0.2 + DimD×0.2) × 10`)
